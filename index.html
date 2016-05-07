@@ -281,7 +281,7 @@ $('.tickbtn').addEventListener("click",function () {
 
             if(number_ticks%5 === 0 ){
                 console.log('H' + number_ticks);
-               // beep.play();
+               beep.play();
             }
             click.play();
 
@@ -327,7 +327,7 @@ function upcount(){
             $('#rest').innerHTML = window.activesecs;
 
             if(activesecs%activity_length ===0){
-                beep.play();
+                //beep.play();
             }
     },1000);
 }
