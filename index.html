@@ -1,399 +1,398 @@
 <html mainfest="cache.manifest">
 <html>
 <head>
-    
-    <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
-    <!-- <meta name="mobile-web-app-capable" content="yes"> -->
+<!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
+<!-- <meta name="mobile-web-app-capable" content="yes"> -->
 
-    <script src="howler.min.js"></script>
-    <title>Exercise</title>
-    <meta charset="UTF-8">
-    <link href="icon.png" rel="apple-touch-icon" sizes="180x180">
-    <link href="icon.png" rel="shortcut icon" sizes="192x192">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="howler.min.js"></script>
+<title>Exercise</title>
+<meta charset="UTF-8">
 
+<link href="icon.png" rel="apple-touch-icon" sizes="180x180">
+<link href="icon.png" rel="shortcut icon" sizes="192x192">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="./pe-icon-7-stroke/css/helper.css">
+<link rel="stylesheet" href="./pe-icon-7-stroke/css/pe-icon-7-stroke.css">
 
 
     <style type="text/css">
 
 
         * {
-
-            -webkit-tap-highlight-color: rgba(0,0,0,0);
+        font-weight: normal;
+        font-style: normal;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
         user-select: none;
         -moz-user-select: none;
         -khtml-user-select: none;
         -webkit-user-select: none;
         -o-user-select: none;
         cursor: pointer;
+        box-sizing: border-box;
+    text-align: center;
+
         }    
 
         body{
         height: 100%;
         width: 100%;
+        overflow: hidden;
+        background: linear-gradient(141deg, #000, 40%, #222);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-family: Arial;
+        align-items: center;
+        margin: 0;
+        color: white;
+        padding: 8vw;
+        font-size: 6vw;
+
         }
 
-        .button {
-            width: 60vw;
-            background: rgba(90, 90, 90, 0.3);
-            height: 60vw;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 17vw;
-            font-family: sans-serif;
-            color: white;
-            position: relative;
-            overflow: hidden;
+        .panel-bottom{
+        	display: flex;
+        	justify-content: space-between;
+        	width: 100%;
         }
 
-        .small{
-            height: 30vw;
-            width: 30vw;
-            font-size: 10vw;
+        .panel-bottom span{
+        	/*width: 33.3%;*/
         }
 
-        .cover {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background: #F1491E;
+        .panel-top{
+        	display: flex;
+        	justify-content: space-between;
+        	width: 100%;
         }
 
-        .data {
-            width: 25%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: sans-serif;
-            color: white;
-            font-size: 9.5vw;
-            padding: 5vw 0px;
+        h1{
+        	font-size: 14vw;
+        	margin: 3vw;
         }
 
-        body {
-            background: black;
-        	margin:0;
+        h3{
+        	font-size: 8vw;
+        	margin: 2vw;
+
         }
 
-        .btn-holder{
-            width: 100%;
-            display: flex;
-            justify-content: center;
+      hr {
+	    display: block;
+	    height: 1px;
+	    border: 0;
+	    border-top: 1px solid #ccc;
+	    margin: 5vw 0;
+	    padding: 0; 
+	}
+
+	p{
+		    margin: 2.5vw 0;
+	}
+
+        .overlay{
+
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: white;
+    padding: 9vw;
+    color: black;
+    padding: 10vw 3vw;
+    /*display: none;*/
+
         }
 
-        
+  .overlay li{
+  	text-align: left;
+  }
 
-        #ticktok{
-            text-align: center;
-        }
-
+     .panel-mid{
+     	width: 100%;
+     }
 
     </style>
 </head>
-<body style="display: flex;flex-wrap: wrap;align-content: space-around;">
+<body>
+
+<div class="overlay">
+	<h3>Wielders principles</h3>
+	<ol>
+		<li>Intermediate rest (focus on number)</li>
+		<li>Unstrict</li>
+		<li>Dropset</li>
+		<li>Slow excentric</li>
+		<li>Dropset</li>
+		<li>Fast set</li>
+	</ol>	
+
+	
+<hr>
+	Can always employ theese regardless of repetitions
+<hr>
+
+<p id='today'>
+
+</p>
+
+<hr>
 
 
-<span id="today" class="data" style="width:100%" ></span>
+<p>
 
+</p>
 
-<div class="btn-holder">
-    <div class="restbtn button large"><span id="rest" style="z-index: 999;">Rest</span>
-        <div class="cover"></div>
-    </div>
+<!--  Idag är det torsdag vilket innebär rygg och baksida skuldra. Börja med att köra 60 repetitioner nedre rygg. Datumet är  -->
+
+	<!-- <h3>Monday</h3>
+	<p>Lower Back, triceps</p>
+	<h3>Thuesday</h3>
+	<p>Reverse fly, row, pullup, abs</p>
+	<h3>Wednesday</h3>
+	<p>Lower Back, legs</p>
+	<h3>Thursday</h3>
+	<p>Biceps, shoulder, legs</p>
+	<h3>Friday</h3>
+	<p>Chest, lower back</p> -->
+
+<!-- 	Visa bara dag - muskelgrupp - datum - intensitet - 1-7 (16+), 7-14 (12-16), 14-21 (8-12), 21-30 (4-8) -->
+	
+</div>
+
+<div class="panel-top">
+<span class="intensity"></span>
+<span class="part"></span>
+
+</div>
+
+<div class="panel-mid">
+<h1 class="rest_time"></h1>
+<h3 class="workout_time"></h3>
+</div>
+
+<div class="panel-bottom">
+<span class="streak">3/14</span>
+<span class="status">Good</span>
+<span class="alarm">Off</span>
 </div>
 
 
-<div class="btn-holder">
-    <div class="tickbtn button small"><span id="ticktok" style="z-index: 999;">Tick</span></div>
-</div>
-
-
-
-
-<span class="data" id="sets">0</span>
-<span class="data" id="abs-sets">0</span>
-
-<span class="data" id="workouttime">0:0</span>
-<span class="data" id="streak">0</span>
-
-
-<!-- <audio id ="b" src="./button.mp3"/>
-<audio id ="go" src="./go.mp3"/>
-<audio id ="finish" src="./finish.mp3"/> -->
+</body>
 
 <script>
 
-
-set_size = 3;
-finished_workout_sec = 60*45;
-
-
-rest_number = 90;
-rest_number_small = 30;
-activity_length = 30;
+var $ = function(v){
+    return document.querySelector(v);
+}
 
 
-tick_interval = 1.7;
-max_ticks = 30;
-
-
-min_sets = 9;
-min_tiksets = 3;
-
-
-
-
-
-go_time = 7;
-
-window.onload = function () {
-
+var intensity = $('.intensity');
+var streak = $('.streak');
+var workout_time = $('.workout_time');
+var rest_time = $('.rest_time');
+var part = $('.part');
+var alarm = $('.alarm');
+var ovr = $('.overlay');
+var today = $('#today');
 
 $('body').addEventListener('touchmove', function(e) {
     e.preventDefault();
 });
 
-$('#streak').innerHTML = localStorage.streak ||0;
+ovr.addEventListener('click', function(e) {
+	ovr.style.display = "none";
+});
+
+var workoutDates = JSON.parse(localStorage.workoutDates || '[]');
+
+//Settings
+var beepInterval = 30;
+var goTime = 5;
+var restCountSetting = 80
 
 
-var d = new Date().getDay();
+//Variable
+var workoutTimeCount = 25*60;
+var restTime = null;
+var hasStarted = false;
+var isResting = false;
+var isGo = false;
+var isFinised = false;
+var isSoundOn = false;
 
-var pushPull = ["Free","Pull","Push","Legs","Pull","Push", "Legs"][d];
 
-var partSplit = ["Free","Upper back","Chest","Shoulders","Legs, lower back","Arms", "Free"][d];
+rest_time.addEventListener('click', function(e) {
+	if(! (isResting||isGo) ){
+		hasStarted = true;
+		isResting = true;
+		restTime = restCountSetting;
+		button.play();
+		updateView();
+	}
+});
 
+alarm.addEventListener('click', function(e) {
+	isSoundOn = !isSoundOn;
+	updateView();
+});
 
-
-localStorage.displayMode = localStorage.displayMode ? localStorage.displayMode : "PUSHPULL"
-
-function updateSplit(){
-	$('#today').innerHTML = localStorage.displayMode === "PUSHPULL" ? pushPull : partSplit;
+function isSameDate(d1,d2){
+	return d1.getDate() == d2.getDate() && d1.getMonth() == d2.getMonth() && d1.getYear() == d2.getYear();
 }
 
 
-$('#today').addEventListener("click",function () {
-	localStorage.displayMode = localStorage.displayMode === "PUSHPULL" ? "PARTSPLIT" : "PUSHPULL";
-	updateSplit();
-});
+function formatedWorkoutTimeCount(){
+	var add = "";
+	if(workoutTimeCount<0){
+		add += "+"
+	}
+	return add+Math.abs(workoutTimeCount/60 | 0) + ":" +  Math.abs(workoutTimeCount%60);
+}
 
-updateSplit();
+function colors(){
+	if(isResting){
+		document.body.style.background = "red";
+	}
+	else if(window.isGo){
+		document.body.style.background = "green";
+	}else{
+		document.body.style.background = "black";
+	}
+	if(isFinised){
+		document.body.style.background = "orange";
+	}
+}
+
+function text(){
+	//Ticks
+	var time = isResting? restTime : restTime>-goTime? "Go" : '+' + Math.abs(restTime);
+	rest_time.innerText = !hasStarted? "Start" : time;
+	workout_time.innerText = formatedWorkoutTimeCount();
+
+
+	//Other
+
+	// if(workout_time%10 ===0){
+		var day = new Date().getDay()
+		var date = Math.floor(((new Date().getDate()-1)/7))
+
+		part.innerText = ["Sunday","Back","Triceps","Legs","Biceps, Shoulders","Chest","Saturday"][day]
+		intensity.innerText = ["16+","12-16","8-12","4-8","4-8"][date] + " reps";
+		alarm.innerText = isSoundOn ? "On " : "Off";
+		streak.innerText = workoutDates.length;
+
+
+		intensity.innerText = ["16+","12-16","8-12","4-8","4-8"][date] + " reps";
+
+		
+
+		today.innerHTML = ["Sunday","<b>Rygg:</b> Chins, Rodd, Reverse flys, 60 repetitioner nedre rygg","<b>Triceps:</b> Smalbänk, Dips, Skull crush, One arm dumbell, 90 repetitioner mage","<b>Legs:</b> Incline leg press, Framlårmaskin, Baklårmaskin, Vader, 60 repetitioner nedre rygg ","<b>Biceps, Shoulders:</b> Rak stång curl, Axelpress, shoulder raise, 90 repetitioner mage","<h3>Chest:</h3> Bänkpress, Dumbell flys, 60 repetitioner rygg","Saturday"][day]
+
+
+
+
+
+	// }
+
+
+}
+
+
+
+
+function updateView(){
+	colors();
+	text();
+}
+updateView();
+
+
+function restingTick(){
+	if(isResting || isGo){
+		restTime--;
+		if(restTime == 0){
+			go.play();
+			isResting = false;
+			isGo = true;
+		}
+		if(restTime%beepInterval ==0 && isGo && isSoundOn){
+			beep.play()
+		}
+	}
+}
+
+function updateWorkoutDates(){
+	//Check if already added
+	var filtered = workoutDates.filter(function(a){
+		return isSameDate(new Date(a),new Date());
+	})
+	if(filtered.length === 0){
+		workoutDates.push(new Date().toString());
+	}
+	localStorage.workoutDates = JSON.stringify(workoutDates);
+}
+
+function workoutTick(){
+	if(hasStarted){
+		workoutTimeCount--;
+		if(workoutTimeCount == 0){
+			isFinised = true;
+			finish.play();
+
+			updateWorkoutDates();
+		}
+	}
+}
+
+
+setInterval(function(){
+	restingTick();
+	workoutTick()
+	updateView();
+},1000);
+
 
 
 var button = new Howl({urls:['button.mp3']});
 var go = new Howl({urls:['go.mp3']}); 
-var finish = new Howl({urls:['finish.mp3']}); 
-var finish = new Howl({urls:['finish.mp3']}); 
+var finish = new Howl({urls:['finish.mp3']});  
 var click = new Howl({urls:['click.wav']}); 
 var beep = new Howl({urls:['beep.mp3']}); 
 
 
-bg = "rgba(90, 90, 90, 0.3)";
 
+// 1. Stretch (körframträdandet)
+// 2. Nedre rygg
+// 3. För stor (kraftig)
 
-setInterval(function(){
-    //button.play();
-},1000);
+// 15-20 Lätt
 
-button.preload = "auto";
-go.preload = "auto";
-finish.preload = "auto";
+// 8-12 Medel
 
-workout_timer = undefined;
-start = undefined;
-rest = "Rest";
-sets = 0;
-ticksets = 0;
+// 6-8 Tungt
 
-hasFinished = false;
+// 3-6 Mycket tungt
+// (månadsmässig)
 
-$('#streak').innerHTML = localStorage.streak ||0;
 
-setInterval(function () {
-    if(start){
-    var seconds =   Math.floor((new Date() - start)/1000);
-    $('#workouttime').innerHTML = Math.floor(( seconds/ 60) ) + ':' + Math.floor(seconds % 60);
 
-    
+// Kort vila - en rep till
+// Ostrikt
+// Dropset
+// Bromsa ner (långsam)
+// Snabbt set
 
-	    if(seconds >= finished_workout_sec && sets >= min_sets &&!hasFinished){
-	     finishedWorkout();   
-	    }
 
-    }
+// Slå av/på beep efter 30 s
+// Vila 30-90 s     Row/Reverse fly/Pullup/Abs
 
-},1000);
 
-window.finishedWorkout = function(){
-	finish.play();
-        $("body").style.backgroundColor = "#B7FBA9"
-        hasFinished  = true;
-
-        localStorage.lastWorkout = localStorage.lastWorkout ? localStorage.lastWorkout : new Date().toString();
-
-        var last = new Date(localStorage.lastWorkout);
-        var current = new Date()
-        var streak = parseInt(localStorage.streak) || 0;
-
-        if( (current - last)/1000 < 3600*48 ){
-            streak +=1;
-        }
-        else{
-            streak = 0;
-        }
-        localStorage.streak = streak;
-        localStorage.lastWorkout = current.toString();
-        $('#streak').innerHTML = localStorage.streak ||0;
-}
-
-function $(sel) {
-    return document.querySelector(sel);
-}
-
-
-window.tiktokInterval;
-var number_ticks = 0;
-
-
-$('.tickbtn').addEventListener("click",function () {
-
-    window.activesecs = 0
-    clearInterval(window.activecounter);
-    $('#rest').innerHTML = "Rest";  
-
-    start = start? start : new Date();
-
-    if(!workout_timer && !window.tiktokInterval){
-
-        $('.small').style.background = 'green';
-
-
-
-        number_ticks = 0;
-
-
-        window.tiktokInterval = setInterval(function(){
-            number_ticks++;
-
-            $('#ticktok').innerHTML = number_ticks;
-
-            if(number_ticks%5 === 0 ){
-                console.log('H' + number_ticks);
-               beep.play();
-            }
-            click.play();
-
-            if(number_ticks === max_ticks){
-                window.clearInterval(window.tiktokInterval);
-                number_ticks = 0;
-                startTimer(rest_number_small);
-                $('.small').style.background = bg;
-
-                $('#ticktok').innerHTML = 'Tick';
-                ticksets++;
-        		$("#abs-sets").innerHTML = ticksets;
-            }
-
-        },tick_interval*1000);
-
-    }
-
-
-});
-
-$('.restbtn').addEventListener("click",function (e) {
-
-    start = start? start : new Date();
-
-
-    var n = e.offsetX < 96 ? rest_number : rest_number_small;
-
-    if(!workout_timer && !window.tiktokInterval){
-        startTimer(n);
-    }
-
-});
-
-
-window.activecounter = undefined;
-window.activesecs = 0;
-
-
-function upcount(){
-    window.activecounter = setInterval(function(){
-            window.activesecs++;
-            $('#rest').innerHTML = window.activesecs;
-
-            if(activesecs%activity_length ===0){
-                //beep.play();
-            }
-    },1000);
-}
-
-function startTimer(number){
-        window.activesecs = 0
-        clearInterval(window.activecounter);
-
-
-        rest = number;
-        button.play();
-        sets++;
-        $('#rest').innerHTML =   rest;
-        $('#sets').innerHTML = sets;
-        $('.cover').style.height = (100*rest/number) + '%';
-
-        if((sets)%set_size === 0){
-            $('.cover').style.background = '#F3B317';
-        }
-        else{
-            $('.cover').style.background = '#F1491E';
-
-        }
-        workout_timer = setInterval(function () {
-            rest -=1;
-            $('.cover').style.height = (100*rest/number) + '%';
-
-
-            if(rest===0){
-                window.clearInterval(workout_timer);
-                window.workout_timer = undefined;
-                rest = "GO";
-                go.play();
-
-
-
-                $('.large').style.background = 'green';
-
-                upcount();
-
-                // setTimeout(function(){
-                //     $('#rest').innerHTML = "Rest";
-                //     $('.large').style.background = bg;
-
-                // },go_time * 1000);
-
-
-
-                $('.cover').style.height = 0;
-            }
-            $('#rest').innerHTML =   rest;
-            
-
-        },1000);
-}
-
-
-
-
-
-};
 
 
 
 </script>
-
-
 </body>
 </html>
