@@ -131,7 +131,7 @@
 
 	
 <hr>
-	Can always employ theese regardless of repetitions
+	Can always employ theese regardless of repetitions - max 3-4 sets/workout
 <hr>
 
 <p id='today'>
@@ -211,11 +211,11 @@ var workoutDates = JSON.parse(localStorage.workoutDates || '[]');
 //Settings
 var beepInterval = 30;
 var goTime = 5;
-var restCountSetting = 80
+var restCountSetting = 90;
+var workoutTimeCount = 25*60;
 
 
 //Variable
-var workoutTimeCount = 25*60;
 var restTime = null;
 var hasStarted = false;
 var isResting = false;
@@ -226,6 +226,7 @@ var isSoundOn = false;
 
 rest_time.addEventListener('click', function(e) {
 	if(! (isResting||isGo) ){
+
 		hasStarted = true;
 		isResting = true;
 		restTime = restCountSetting;
@@ -285,7 +286,7 @@ function text(){
 		streak.innerText = workoutDates.length;
 
 
-		intensity.innerText = ["16+","12-16","8-12","4-8","4-8"][date] + " reps";
+		intensity.innerText = ["15-19","12-14","8-11","8-11","4-7"][date] + " reps";
 
 		
 
@@ -311,12 +312,15 @@ updateView();
 
 
 function restingTick(){
-	if(isResting || isGo){
+	if(hasStarted){
 		restTime--;
 		if(restTime == 0){
 			go.play();
 			isResting = false;
 			isGo = true;
+		}
+		if(restTime <=-goTime){
+			isGo = false;
 		}
 		if(restTime%beepInterval ==0 && isGo && isSoundOn){
 			beep.play()
