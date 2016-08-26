@@ -1,4 +1,5 @@
-<html mainfest="cache.manifest">
+<!-- <html mainfest="cache.manifest"> -->
+
 <html>
 <head>
 <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
@@ -102,7 +103,7 @@
     padding: 9vw;
     color: black;
     padding: 10vw 3vw;
-    /*display: none;*/
+    display: none;
 
         }
 
@@ -112,6 +113,11 @@
 
      .panel-mid{
      	width: 100%;
+    	height: 70%;
+    	display: flex;
+    	justify-content: center;
+    	align-items: center;
+    	flex-direction: column;
      }
 
     </style>
@@ -175,7 +181,7 @@
 
 <div class="panel-bottom">
 <span class="streak">3/14</span>
-<span class="status">Good</span>
+<span class="status"></span>
 <span class="alarm">Off</span>
 </div>
 
@@ -188,7 +194,6 @@ var $ = function(v){
     return document.querySelector(v);
 }
 
-
 var intensity = $('.intensity');
 var streak = $('.streak');
 var workout_time = $('.workout_time');
@@ -197,6 +202,8 @@ var part = $('.part');
 var alarm = $('.alarm');
 var ovr = $('.overlay');
 var today = $('#today');
+
+var midpanel = $('.panel-mid');
 
 $('body').addEventListener('touchmove', function(e) {
     e.preventDefault();
@@ -211,8 +218,8 @@ var workoutDates = JSON.parse(localStorage.workoutDates || '[]');
 //Settings
 var beepInterval = 30;
 var goTime = 5;
-var restCountSetting = 90;
-var workoutTimeCount = 25*60;
+var workoutTimeCount =25*60;
+var abstime = 4*60;
 
 
 //Variable
@@ -222,14 +229,53 @@ var isResting = false;
 var isGo = false;
 var isFinised = false;
 var isSoundOn = false;
+var isAbs = false;
 
 
-rest_time.addEventListener('click', function(e) {
+midpanel.addEventListener('click', function(e) {
+	var X = e.pageX - this.offsetLeft
+	var Y = e.pageY - this.offsetTop
+
+
+
+
+	var width = this.offsetWidth;
+	var height = this.offsetHeight
+
+	console.log(width)
+	console.log(height)
+
 	if(! (isResting||isGo) ){
+
+		if(X<width/2 && Y<height/3){
+			restTime = 15
+		}
+
+		else if(X>=width/2 && Y<height/3){
+			restTime = 30
+		}
+
+
+
+		else if(X<width/2 && Y>=height/3 && Y<2*height/3){
+			restTime = 45
+		}
+		else if(X>=width/2 && Y>=height/3 && Y<2*height/3){
+			restTime = 60
+		}
+
+
+
+		else if(X<width/2 && Y>=2*height/3){
+			restTime = 90
+		}
+		else if(X>=width/2 && Y>=2*height/3){
+			restTime = 180
+		}
+
 
 		hasStarted = true;
 		isResting = true;
-		restTime = restCountSetting;
 		button.play();
 		updateView();
 	}
@@ -259,12 +305,18 @@ function colors(){
 	}
 	else if(window.isGo){
 		document.body.style.background = "green";
-	}else{
+	}
+	else{
 		document.body.style.background = "black";
+	}
+
+	if(isAbs){
+		document.body.style.background = "purple";
 	}
 	if(isFinised){
 		document.body.style.background = "orange";
 	}
+	
 }
 
 function text(){
@@ -280,20 +332,22 @@ function text(){
 		var day = new Date().getDay()
 		var date = Math.floor(((new Date().getDate()-1)/7))
 
-		part.innerText = ["Sunday","Back","Triceps","Legs","Biceps, Shoulders","Chest","Saturday"][day]
-		intensity.innerText = ["16+","12-16","8-12","4-8","4-8"][date] + " reps";
+		
 		alarm.innerText = isSoundOn ? "On " : "Off";
 		streak.innerText = workoutDates.length;
 
 
-		intensity.innerText = ["15-19","12-14","8-11","8-11","4-7"][date] + " reps";
+		part.innerText = ["Pull","Push","Legs"][workoutDates.length%3]
+
+
+		today.innerHTML = ["<b>Pull:</b> Mark, Rodd, Chins, Biceps, Mage","<b>Push:</b> Bänk, Flyes, Militär, Shoulder Raise, Triceps","<b>Legs:</b> Benböj, Vader, Baklår, Mage "][workoutDates.length%3]
+
+
+
+
+		intensity.innerText = ""; //["15-19","12-14","8-11","8-11","4-7"][date] + " reps";
 
 		
-
-		today.innerHTML = ["Sunday","<b>Rygg:</b> Chins, Rodd, Reverse flys, 60 repetitioner nedre rygg","<b>Triceps:</b> Smalbänk, Dips, Skull crush, One arm dumbell, 90 repetitioner mage","<b>Legs:</b> Incline leg press, Framlårmaskin, Baklårmaskin, Vader, 60 repetitioner nedre rygg ","<b>Biceps, Shoulders:</b> Rak stång curl, Axelpress, shoulder raise, 90 repetitioner mage","<h3>Chest:</h3> Bänkpress, Dumbell flys, 60 repetitioner rygg","Saturday"][day]
-
-
-
 
 
 	// }
@@ -322,9 +376,6 @@ function restingTick(){
 		if(restTime <=-goTime){
 			isGo = false;
 		}
-		if(restTime%beepInterval ==0 && isGo && isSoundOn){
-			beep.play()
-		}
 	}
 }
 
@@ -348,6 +399,10 @@ function workoutTick(){
 
 			updateWorkoutDates();
 		}
+		if(workoutTimeCount === abstime && (part.innerText === "Legs" || part.innerText === "Pull")){
+			isAbs = true;
+			abssound.play();
+		}
 	}
 }
 
@@ -365,6 +420,7 @@ var go = new Howl({urls:['go.mp3']});
 var finish = new Howl({urls:['finish.mp3']});  
 var click = new Howl({urls:['click.wav']}); 
 var beep = new Howl({urls:['beep.mp3']}); 
+var abssound = new Howl({urls:['abs.mp3']}); 
 
 
 
