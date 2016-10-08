@@ -23,6 +23,11 @@ $('body').addEventListener('touchmove', function(e) {
 });
 
 
+$('body').addEventListener('touchend', function(e) {
+    e.preventDefault();
+});
+
+
 start_data = [
 	{
 		Benchpress:[90,2],
