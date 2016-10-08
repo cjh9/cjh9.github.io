@@ -29,9 +29,6 @@ $('body').addEventListener('touchstart', function(e) {
 }, true);
 
 
-
-
-
 start_data = [
 	{
 		Benchpress:[90,2],
