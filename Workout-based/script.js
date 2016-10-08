@@ -26,7 +26,7 @@ $('body').addEventListener('touchstart', function(e) {
 	if (evt.touches.length < 2){
         evt.preventDefault();
 	}
-});
+}, true);
 
 
 
@@ -35,26 +35,25 @@ $('body').addEventListener('touchstart', function(e) {
 start_data = [
 	{
 		Benchpress:[90,2],
-		Pulley_crunch:[90,4],
-		Overhead_press:[90,4],
-		Hanging_leg_raise:[90,4],
+		Pulley_crunch:[30,4],
+		Overhead_press:[50,4],
+		Hanging_leg_raise:[12,4],
 		Benchpress:[90,2],
-		Front_raise:[90,4]
+		Front_raise:[9,4]
 	},
 	{
-		Squat:[90,4],
-		Oblique_twist:[90,4],
-		Calf_raise:[90,4],
-		Hamstrings_curls:[90,4],
+		Squat:[80,4],
+		Calf_raise:[70,4],
+		Hamstrings_curls:[40,4],
 		Deadlift:[90,4]
 	},
 	{
-		Seated_pulley_row:[90,4],
-		Lat_pulldown:[90,4],
-		Triceps_pulldown:[90,2],
-		Biceps_curl:[90,2],
-		Triceps_pulldown:[90,2],
-		Biceps_curl:[90,2]
+		Seated_pulley_row:[50,4],
+		Lat_pulldown:[70,4],
+		Triceps_pulldown:[30,2],
+		Biceps_curl:[40,2],
+		Triceps_pulldown:[30,2],
+		Biceps_curl:[40,2]
 	}
 ]
 
@@ -136,7 +135,7 @@ midpanel.addEventListener('click', function(e) {
 	if(! (isResting||isGo) ){
 		if(Y<height/3){
 			if(X<width/3){
-				restTime = 5
+				restTime = 15
 			}
 			if(X>=width/3 && X<2*width/3){
 				restTime = 30
