@@ -22,10 +22,14 @@ $('body').addEventListener('touchmove', function(e) {
     e.preventDefault();
 });
 
-
-$('body').addEventListener('touchend', function(e) {
-    e.preventDefault();
+$('body').addEventListener('touchstart', function(e) {
+	if (evt.touches.length < 2){
+        evt.preventDefault();
+	}
 });
+
+
+
 
 
 start_data = [
