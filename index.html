@@ -236,9 +236,6 @@ midpanel.addEventListener('click', function(e) {
 	var X = e.pageX - this.offsetLeft
 	var Y = e.pageY - this.offsetTop
 
-
-
-
 	var width = this.offsetWidth;
 	var height = this.offsetHeight
 
@@ -246,33 +243,41 @@ midpanel.addEventListener('click', function(e) {
 	console.log(height)
 
 	if(! (isResting||isGo) ){
-
-		if(X<width/2 && Y<height/3){
-			restTime = 15
+		if(Y<height/3){
+			if(X<width/3){
+				restTime = 15
+			}
+			if(X>=width/3 && X<2*width/3){
+				restTime = 30
+			}
+			if(X>=2*width/3){
+				restTime = 45
+			}
 		}
 
-		else if(X>=width/2 && Y<height/3){
-			restTime = 30
+		if(Y>=height/3 && Y<2*height/3){
+			if(X<width/3){
+				restTime = 60
+			}
+			if(X>=width/3 && X<2*width/3){
+				restTime = 85
+			}
+			if(X>=2*width/3){
+				restTime = 90
+			}
 		}
 
-
-
-		else if(X<width/2 && Y>=height/3 && Y<2*height/3){
-			restTime = 45
+		if(Y>2*height/3){
+			if(X<width/3){
+				restTime = 120
+			}
+			if(X>=width/3 && X<2*width/3){
+				restTime = 150
+			}
+			if(X>=2*width/3){
+				restTime = 180
+			}
 		}
-		else if(X>=width/2 && Y>=height/3 && Y<2*height/3){
-			restTime = 60
-		}
-
-
-
-		else if(X<width/2 && Y>=2*height/3){
-			restTime = 90
-		}
-		else if(X>=width/2 && Y>=2*height/3){
-			restTime = 180
-		}
-
 
 		hasStarted = true;
 		isResting = true;
