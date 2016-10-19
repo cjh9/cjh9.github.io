@@ -52,7 +52,7 @@ start_data = [
 ]
 
 
-localStorage.clear()
+
 // start_dates = [new Date("October 13, 2014 11:13:00"),new Date("October 14, 2014 11:13:00")]
 
 start_dates = []
@@ -142,7 +142,7 @@ midpanel.addEventListener('click', function(e) {
 	var width = this.offsetWidth;
 	var height = this.offsetHeight
 
-	resttimes = [1,120,135,150,165,180,195,210,225]
+	resttimes = [5,120,135,150,165,180,195,210,225]
 
 	if(! (isResting||isGo) ){
 		if(Y<height/3){
