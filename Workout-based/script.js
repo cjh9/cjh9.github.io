@@ -142,7 +142,7 @@ midpanel.addEventListener('click', function(e) {
 	var width = this.offsetWidth;
 	var height = this.offsetHeight
 
-	resttimes = [5,120,135,150,165,180,195,210,225]
+	resttimes = [1,120,135,150,165,180,195,210,225]
 
 	if(! (isResting||isGo) ){
 		if(Y<height/3){
