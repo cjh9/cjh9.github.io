@@ -22,94 +22,95 @@ $('body').addEventListener('touchmove', function(e) {
     e.preventDefault();
 });
 
-$('body').addEventListener('touchstart', function(e) {
-	if (evt.touches.length < 2){
-        evt.preventDefault();
-	}
-}, true);
 
 
 start_data = [
-	{
-		Benchpress:[90,2],
-		Pulley_crunch:[30,4],
-		Overhead_press:[50,4],
-		Hanging_leg_raise:[12,4],
-		Benchpress:[90,2],
-		Front_raise:[9,4]
-	},
-	{
-		Squat:[80,4],
-		Calf_raise:[70,4],
-		Hamstrings_curls:[40,4],
-		Deadlift:[90,4]
-	},
-	{
-		Seated_pulley_row:[50,4],
-		Lat_pulldown:[70,4],
-		Triceps_pulldown:[30,2],
-		Biceps_curl:[40,2],
-		Triceps_pulldown:[30,2],
-		Biceps_curl:[40,2]
-	}
+	[
+		["Benchpress",85,2],
+		["Pulley crunch",90,4],
+		["Overhead press",45,4],
+		["Hanging leg raise",15,4],
+		["Benchpress",85,2],
+		["Front raise",12,4]
+	], //5
+	[
+		["Squat", 80, 4],
+		["Calf raise", 80, 4],
+		["Hamstrings curls", 40, 4],
+		["Deadlift", 90, 4],
+	], //4
+	[
+
+		["Seated pulley row", 45, 4],
+		["Lat pulldown", 70, 4],
+		["Triceps pulldown", 35, 2],
+		["Biceps curl", 40, 2],
+		["Triceps pulldown", 35, 2],
+		["Biceps curl", 40, 2],
+	] //4
 ]
 
-start_data = JSON.stringify(start_data)
-var workoutDates = JSON.parse(localStorage.workoutDates || '[]');
+
+// localStorage.clear()
+// start_dates = [new Date("October 13, 2014 11:13:00"),new Date("October 14, 2014 11:13:00")]
+
+start_dates = []
+start_dates = JSON.stringify(start_dates);
+start_data = JSON.stringify(start_data);
+
+var workoutDates = JSON.parse(localStorage.workoutDates || start_dates);
 var workoutData = JSON.parse(localStorage.workoutData || start_data);
+
+
 var workoutIdx = workoutDates.length%3;
 var exerciseIdx = 0;
 var setIdx = 0;
-var numExercises = Object.keys(workoutData[workoutIdx])
-
+var numExercises = workoutData[workoutIdx].length
 
 function current(){
 	if(isFinised){
 		return{exercise:"",weight:"",maxSet:""}
 	}
-	var currentExercise = Object.keys(workoutData[workoutIdx])[exerciseIdx];
-	var exerciseObject = workoutData[workoutIdx][currentExercise]
-	var currentWeight = exerciseObject[0];
-	var currentMaxset = exerciseObject[1];
 
+	var workout = workoutData[workoutIdx]
+	var exercise = workout[exerciseIdx];
 	return {
-		exercise:currentExercise, 
-		weight:currentWeight, 
-		maxSet:currentMaxset,
-		exerciseObject:exerciseObject
+		name:exercise[0], 
+		weight:exercise[1], 
+		maxSet:exercise[2],
+		workout:workout,
+		exercise:exercise
 	}
 }
 
-increase_label.addEventListener('click', function(e) {
-	var obj = current().exerciseObject;
-	obj[0]+=1;
+function change(amount){
+	for(var i = 0 ; i < numExercises ; i++){
+		if(current().workout[i][0] === current().name){
+			current().workout[i][1]+=amount;
+		}
+	}
 	localStorage.workoutData = JSON.stringify(workoutData);
 	text();
+}
+
+increase_label.addEventListener('click', function(e) {
+	change(1);
+	
 });
 
 decrease_label.addEventListener('click', function(e) {
-	var obj = current().exerciseObject;
-	obj[0] -=1;
-	localStorage.workoutData = JSON.stringify(workoutData);
-	text();
+	change(-1);
 });
 
 function incrementWorkout(){
 	setIdx++;
 	if(setIdx === current().maxSet){
 		setIdx = 0;
-		exerciseIdx++
-
-		if(numExercises.length === exerciseIdx){
-			isFinised = true;
-			finish.play();
-			updateWorkoutDates();
-		}
+		exerciseIdx++		
 	}
-	text();
 }
 //Settings
-var goTime = 5;
+var goTime = 0;
 var workoutTimeCount = 0;
 
 //Variable
@@ -123,46 +124,59 @@ var isAbs = false;
 
 midpanel.addEventListener('click', function(e) {
 
+	incrementWorkout();
+	if(exerciseIdx === numExercises){
+		isFinised = true;
+		finish.play();
+		updateWorkoutDates();
+		exerciseIdx++
+		updateView();
+		return
+	}
+
+
 	var X = e.pageX - this.offsetLeft
 	var Y = e.pageY - this.offsetTop
 
 	var width = this.offsetWidth;
 	var height = this.offsetHeight
 
+	resttimes = [90,105,120,135,150,165,180,195,210]
+
 	if(! (isResting||isGo) ){
 		if(Y<height/3){
 			if(X<width/3){
-				restTime = 15
+				restTime = resttimes[0]
 			}
 			if(X>=width/3 && X<2*width/3){
-				restTime = 30
+				restTime = resttimes[1]
 			}
 			if(X>=2*width/3){
-				restTime = 45
+				restTime = resttimes[2]
 			}
 		}
 
 		if(Y>=height/3 && Y<2*height/3){
 			if(X<width/3){
-				restTime = 60
+				restTime = resttimes[3]
 			}
 			if(X>=width/3 && X<2*width/3){
-				restTime = 85
+				restTime = resttimes[4]
 			}
 			if(X>=2*width/3){
-				restTime = 90
+				restTime = resttimes[5]
 			}
 		}
 
 		if(Y>2*height/3){
 			if(X<width/3){
-				restTime = 120
+				restTime = resttimes[6]
 			}
 			if(X>=width/3 && X<2*width/3){
-				restTime = 150
+				restTime = resttimes[7]
 			}
 			if(X>=2*width/3){
-				restTime = 180
+				restTime = resttimes[8]
 			}
 		}
 
@@ -171,7 +185,7 @@ midpanel.addEventListener('click', function(e) {
 		button.play();
 		updateView();
 
-		incrementWorkout();
+		
 	}
 });
 
@@ -221,7 +235,7 @@ function text(){
 	streak.innerText = workoutDates.length;
 
 	set_label.innerText = setIdx+1  + " / " + current().maxSet;
-	exercise_label.innerText =  current().exercise.replace(/_/g, " ");
+	exercise_label.innerText =  current().name;
 	weight_label.innerText = current().weight;
 
 	if(isFinised){
