@@ -124,6 +124,10 @@ var isSoundOn = false;
 var isAbs = false;
 
 midpanel.addEventListener('click', function(e) {
+	
+	if( (isResting||isGo) ){
+		return;
+	}
 
 	incrementWorkout();
 	if(exerciseIdx === numExercises){
@@ -132,7 +136,7 @@ midpanel.addEventListener('click', function(e) {
 		updateWorkoutDates();
 		exerciseIdx++
 		updateView();
-		return
+		return;
 	}
 
 
@@ -144,50 +148,50 @@ midpanel.addEventListener('click', function(e) {
 
 	resttimes = [5,120,135,150,165,180,195,210,225]
 
-	if(! (isResting||isGo) ){
-		if(Y<height/3){
-			if(X<width/3){
-				restTime = resttimes[0]
-			}
-			if(X>=width/3 && X<2*width/3){
-				restTime = resttimes[1]
-			}
-			if(X>=2*width/3){
-				restTime = resttimes[2]
-			}
+	
+	if(Y<height/3){
+		if(X<width/3){
+			restTime = resttimes[0]
 		}
-
-		if(Y>=height/3 && Y<2*height/3){
-			if(X<width/3){
-				restTime = resttimes[3]
-			}
-			if(X>=width/3 && X<2*width/3){
-				restTime = resttimes[4]
-			}
-			if(X>=2*width/3){
-				restTime = resttimes[5]
-			}
+		if(X>=width/3 && X<2*width/3){
+			restTime = resttimes[1]
 		}
-
-		if(Y>2*height/3){
-			if(X<width/3){
-				restTime = resttimes[6]
-			}
-			if(X>=width/3 && X<2*width/3){
-				restTime = resttimes[7]
-			}
-			if(X>=2*width/3){
-				restTime = resttimes[8]
-			}
+		if(X>=2*width/3){
+			restTime = resttimes[2]
 		}
+	}
 
-		hasStarted = true;
-		isResting = true;
-		button.play();
-		updateView();
+	if(Y>=height/3 && Y<2*height/3){
+		if(X<width/3){
+			restTime = resttimes[3]
+		}
+		if(X>=width/3 && X<2*width/3){
+			restTime = resttimes[4]
+		}
+		if(X>=2*width/3){
+			restTime = resttimes[5]
+		}
+	}
+
+	if(Y>2*height/3){
+		if(X<width/3){
+			restTime = resttimes[6]
+		}
+		if(X>=width/3 && X<2*width/3){
+			restTime = resttimes[7]
+		}
+		if(X>=2*width/3){
+			restTime = resttimes[8]
+		}
+	}
+
+	hasStarted = true;
+	isResting = true;
+	button.play();
+	updateView();
 
 		
-	}
+
 });
 
 
