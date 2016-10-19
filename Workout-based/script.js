@@ -31,7 +31,7 @@ start_data = [
 		["Overhead press",45,4],
 		["Hanging leg raise",15,4],
 		["Benchpress",85,2],
-		["Front raise",12,4]
+		["Front raise",12,4],
 		["Rear Cable",12,4]
 	], //5
 	[
@@ -52,7 +52,7 @@ start_data = [
 ]
 
 
-// localStorage.clear()
+localStorage.clear()
 // start_dates = [new Date("October 13, 2014 11:13:00"),new Date("October 14, 2014 11:13:00")]
 
 start_dates = []
