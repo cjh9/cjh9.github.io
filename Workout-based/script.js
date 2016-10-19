@@ -32,6 +32,7 @@ start_data = [
 		["Hanging leg raise",15,4],
 		["Benchpress",85,2],
 		["Front raise",12,4]
+		["Rear Cable",12,4]
 	], //5
 	[
 		["Squat", 80, 4],
