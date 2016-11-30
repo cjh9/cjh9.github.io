@@ -12,6 +12,8 @@ var today = $('#today');
 var midpanel = $('.panel-mid');
 
 var weight_label = $('.weight');
+var weight_wrapper = $('.weight-wrapper');
+
 var exercise_label = $('.exercise');
 var set_label = $('.set');
 
@@ -26,28 +28,27 @@ $('body').addEventListener('touchmove', function(e) {
 
 start_data = [
 	[
-		["Benchpress",85,2],
-		["Pulley crunch",90,4],
-		["Overhead press",45,4],
-		["Hanging leg raise",15,4],
-		["Benchpress",85,2],
-		["Front raise",12,4],
-		["Rear Cable",12,4]
+		["Benchpress",95,2],
+		["Pulley crunch",50,4],
+		["Overhead press",55,4],
+		["Hanging leg raise",7,4],
+		["Benchpress",95,2],
+		["Front raise",12,4]
 	], //5
 	[
-		["Squat", 80, 4],
-		["Calf raise", 80, 4],
-		["Hamstrings curls", 40, 4],
-		["Deadlift", 90, 4],
+		["Squat", 90, 4],
+		["Calf raise", 45, 4],
+		["Hamstrings curls", 75, 4],
+		["Deadlift", 100, 4],
 	], //4
 	[
 
-		["Seated pulley row", 45, 4],
-		["Lat pulldown", 70, 4],
+		["Seated pulley row", 65, 4],
+		["Lat pulldown", 85, 4],
 		["Triceps pulldown", 35, 2],
-		["Biceps curl", 40, 2],
+		["Biceps curl", 42, 2],
 		["Triceps pulldown", 35, 2],
-		["Biceps curl", 40, 2],
+		["Biceps curl", 42, 2],
 	] //4
 ]
 
@@ -103,6 +104,12 @@ decrease_label.addEventListener('click', function(e) {
 	change(-1);
 });
 
+weight_wrapper.addEventListener('click', function(e) {
+	restTime = 1;
+	restingTick();
+	updateView();
+});
+
 function incrementWorkout(){
 	setIdx++;
 	if(setIdx === current().maxSet){
@@ -146,7 +153,7 @@ midpanel.addEventListener('click', function(e) {
 	var width = this.offsetWidth;
 	var height = this.offsetHeight
 
-	resttimes = [5,120,135,150,165,180,195,210,225]
+	resttimes = [5,30,120,150,180,210,240,270,300]
 
 	
 	if(Y<height/3){
@@ -231,7 +238,13 @@ function colors(){
 
 function text(){
 	//Ticks
-	var time = isResting? restTime : restTime>-goTime? "Go" : '+' + Math.abs(restTime);
+
+	var secondsPassed = Math.abs(restTime)
+	var timeLeftFormatted =  ( (restTime/60 | 0) + ":"+ restTime%60 )
+	var timePassedFormatted = ( (-restTime/60 | 0) + ":"+ -restTime%60 )
+
+
+	var time = isResting? timeLeftFormatted  : restTime>-goTime? "Go" : '+' + timePassedFormatted;
 	rest_time.innerText = !hasStarted? "Start" : time;	
 	workout_time.innerText = formatedWorkoutTimeCount();
 
