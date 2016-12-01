@@ -60,14 +60,15 @@ start_dates = []
 start_dates = JSON.stringify(start_dates);
 start_data = JSON.stringify(start_data);
 
-var workoutDates = JSON.parse(localStorage.workoutDates || start_dates);
-var workoutData = JSON.parse(localStorage.workoutData || start_data);
+workoutDates = JSON.parse(localStorage.workoutDates || start_dates);
+workoutData = JSON.parse(localStorage.workoutData || start_data);
 
 
-var workoutIdx = workoutDates.length%3;
-var exerciseIdx = 0;
-var setIdx = 0;
-var numExercises = workoutData[workoutIdx].length
+workoutIdx = workoutDates.length%3;
+exerciseIdx = 0;
+setIdx = 0;
+numExercises = workoutData[workoutIdx].length
+
 
 function current(){
 	if(isFinised){
@@ -105,9 +106,20 @@ decrease_label.addEventListener('click', function(e) {
 });
 
 weight_wrapper.addEventListener('click', function(e) {
-	restTime = 1;
-	restingTick();
-	updateView();
+	if(isResting){
+		restTime = 1;
+		restingTick();
+		updateView();
+	}
+	
+});
+
+streak.addEventListener('click', function(e) {
+	if(!hasStarted){
+		workoutDates.push(new Date().toString());
+		localStorage.workoutDates = JSON.stringify(workoutDates);
+		location.reload();
+	}
 });
 
 function incrementWorkout(){
@@ -318,6 +330,8 @@ var go = new Howl({urls:['go.mp3']});
 var finish = new Howl({urls:['finish.mp3']});  
 var click = new Howl({urls:['click.wav']}); 
 var beep = new Howl({urls:['beep.mp3']}); 
+
+
 
 
 
