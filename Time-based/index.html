@@ -242,40 +242,42 @@ midpanel.addEventListener('click', function(e) {
 	console.log(width)
 	console.log(height)
 
+	times = [3, 15, 30,45,60,75,90,105,120]
+
 	if(! (isResting||isGo) ){
 		if(Y<height/3){
 			if(X<width/3){
-				restTime = 15
+				restTime = times[0];
 			}
 			if(X>=width/3 && X<2*width/3){
-				restTime = 30
+				restTime = times[1];
 			}
 			if(X>=2*width/3){
-				restTime = 45
+				restTime = times[2];
 			}
 		}
 
 		if(Y>=height/3 && Y<2*height/3){
 			if(X<width/3){
-				restTime = 60
+				restTime = times[3];
 			}
 			if(X>=width/3 && X<2*width/3){
-				restTime = 85
+				restTime = times[4];
 			}
 			if(X>=2*width/3){
-				restTime = 90
+				restTime = times[5];
 			}
 		}
 
 		if(Y>2*height/3){
 			if(X<width/3){
-				restTime = 120
+				restTime = times[6];
 			}
 			if(X>=width/3 && X<2*width/3){
-				restTime = 150
+				restTime = times[7];
 			}
 			if(X>=2*width/3){
-				restTime = 180
+				restTime = times[8];
 			}
 		}
 
@@ -342,7 +344,7 @@ function text(){
 		streak.innerText = workoutDates.length;
 
 
-		part.innerText = ["Pull","Push","Legs"][workoutDates.length%3]
+		part.innerText = ["Back","Chest","Legs","Shoulder","Arms"][workoutDates.length%3]
 
 
 		today.innerHTML = ["<b>Pull:</b> Mark, Rodd, Chins, Biceps, Mage","<b>Push:</b> Bänk, Flyes, Militär, Shoulder Raise, Triceps","<b>Legs:</b> Benböj, Vader, Baklår, Mage "][workoutDates.length%3]
