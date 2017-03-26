@@ -219,7 +219,7 @@ var workoutDates = JSON.parse(localStorage.workoutDates || '[]');
 var beepInterval = 30;
 var goTime = 5;
 var workoutTimeCount =25*60;
-var abstime = 5*60 + 55;
+var abstime = 5*60;
 
 
 //Variable
@@ -344,7 +344,9 @@ function text(){
 		var day = new Date().getDay()
 		var date = Math.floor(((new Date().getDate()-1)/7))
 
-		
+		window.day = day;
+
+
 		alarm.innerText = isSoundOn ? "On " : "Off";
 		streak.innerText = workoutDates.length;
 
@@ -413,7 +415,7 @@ function workoutTick(){
 
 		// && (part.innerText === "Legs" || part.innerText === "Pull"
 
-		if(workoutTimeCount === abstime){
+		if(workoutTimeCount === abstime && day !== 5){
 			isAbs = true;
 			abssound.play();
 		}

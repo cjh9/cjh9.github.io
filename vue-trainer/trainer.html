@@ -1,0 +1,39 @@
+<script src="vue.js"></script>
+
+<training-app>
+
+  <exercise-widget>
+    <button id="plus"></button>
+    <button id="minus"></button>
+    <div class="exercise label"></div>
+    <div class="weight label"></div>
+  </exercise-widget>
+
+
+  <timer-widget>
+
+    <div class="rest-time label"></div>
+
+    <button v=if="etc" v-for="in rest times"></button>
+
+
+    <div class="workout-time-label"></div>
+    <button class="finish-workout"></button>
+
+  </timer-widget>
+
+  <statistics-widtget>
+    streak
+
+    record streak
+    
+    good/bad
+  </statistics-widtget>
+
+</training-app>
+
+
+
+<script>
+
+</script>
