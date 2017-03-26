@@ -1,0 +1,71 @@
+<head>
+<title>Exercise</title>
+<meta charset="UTF-8">
+
+<link href="icon.png" rel="apple-touch-icon" sizes="180x180">
+<link href="icon.png" rel="shortcut icon" sizes="192x192">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+
+<style>
+	
+body{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 50px;
+	font-family: Arial;
+}
+
+
+
+
+</style>
+</head>
+
+<body><span id="text"></span></body>
+
+<script src="howler.min.js"></script>
+
+<script type="text/javascript">
+
+
+
+function repeat_beep(cbck, max){
+	number = 1
+	var interval = setInterval(function(){ 
+		var button = new Howl({urls:['beep.wav']});
+		button.play();
+		if (number === max){
+			clearInterval(interval)
+			cbck();
+
+		}
+		number++;
+	}, 1500);
+}
+	
+
+var beeps = 1
+
+
+function repeat(){
+	setTimeout(function f() {
+
+
+		repeat_beep(function(){
+			beeps+=1;
+			repeat();
+		}, beeps)
+
+	}, 10*1000*beeps)	
+}
+
+repeat()
+
+
+
+
+
+
+</script>
+
