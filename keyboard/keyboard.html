@@ -86,11 +86,12 @@ const mynotes =
 var context = new AudioContext();
 
 
+StartAudioContext(context).then((e)=>{
+	console.log(e)
+})
+
 function play(note){
-	StartAudioContext(context).then(()=>{
-		console.log(note)
-		synth.triggerAttackRelease(note, "4n");
-	})
+	synth.triggerAttackRelease(note, "4n");
 }
 
 function resetTimer(){
