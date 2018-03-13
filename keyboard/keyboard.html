@@ -1,0 +1,90 @@
+
+<style>
+
+button{
+    width: 20%;
+    height: 17%;
+    background: #4e4e4e;
+    color: white;
+    outline: none;
+    -webkit-appearance: none;
+    border: 1px solid lightgray;
+    transition: all 0.2s;
+}
+
+button:active{
+	background: white;
+	color:gray;
+}
+
+#timer{
+	background: white;
+	color:gray;
+}
+
+#timer:active{
+	background: #4e4e4e;
+    color: white;
+}
+
+body{
+	background: #7d7d7d;
+}
+
+</style>
+
+<body>
+</body>
+
+
+<script src="Tone.min.js"></script>
+
+<script>
+
+
+let count = 0
+setInterval(()=>{
+	count++
+	if(count === 3123){
+		document.body.style.background = "#a1f5a1"
+	}
+	renderTime()
+},1e3)
+
+
+var synth = new Tone.Synth().toMaster();
+
+const mynotes = 
+['F2','F#2','G2','G#2','A2','A#2','B2',
+'C3','C#3','D3','D#3','E3','F3','F#3','G3','G#3', 'A3', 'A#3', 'B3', 
+'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'G4', 'G#4'
+] //27 notes
+
+
+function play(note){
+	console.log(note)
+	synth.triggerAttackRelease(note, "4n");
+}
+
+function resetTimer(){
+	count = 0
+	renderTime()
+}
+
+function renderTime(){
+	let timerElm = document.getElementById('timer')
+	let time = parseInt(count/60) + ':' + (count % 60)
+	timerElm.innerText = time
+}
+
+function render() {
+	let keyboard = mynotes.map((note)=>`<button onclick="play('${note}')" class="key">${note}</button>`).join('')
+
+	keyboard = '<button onclick="resetTimer()" id="timer">0</div>' + keyboard
+
+	document.body.innerHTML = keyboard
+}
+
+render()
+
+</script>
