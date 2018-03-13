@@ -2,7 +2,9 @@
 
 <head>
 
-<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<script src="StartAudioContext.js"></script>
 
 <style>
 
@@ -81,9 +83,14 @@ const mynotes =
 ] //27 notes
 
 
+var context = new AudioContext();
+
+
 function play(note){
-	console.log(note)
-	synth.triggerAttackRelease(note, "4n");
+	StartAudioContext(context).then(()=>{
+		console.log(note)
+		synth.triggerAttackRelease(note, "4n");
+	})
 }
 
 function resetTimer(){
