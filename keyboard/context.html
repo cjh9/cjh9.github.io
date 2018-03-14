@@ -1,0 +1,22 @@
+<div id="btn">Text</div>
+
+<script src="simpleTones.js"></script>
+<script src="StartAudioContext.js"></script>
+<script src="Tone.min.js"></script>
+
+
+<script>
+//pass in the audio context
+var context = new AudioContext();
+
+//on iOS, the context will be started on the first valid user action on the #playButton element
+StartAudioContext(Tone.context, "#btn").then(()=>{
+	console.log(123)
+})
+
+btn.addEventListener('click',()=>{
+	playTone('C3','sawtooth', 2)
+})
+
+
+</script>
