@@ -4,7 +4,10 @@
 
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-<script src="StartAudioContext.js"></script>
+<script src="simpleTones.js"></script>
+
+
+<!-- <script src="StartAudioContext.js"></script> -->
 
 <style>
 
@@ -82,16 +85,15 @@ const mynotes =
 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'G4', 'G#4'
 ] //27 notes
 
-
-var context = new AudioContext();
-
-
-StartAudioContext(context).then((e)=>{
-	console.log(e)
-})
+// var context = new AudioContext();
+// StartAudioContext(context).then((e)=>{
+// 	console.log(e)
+// })
 
 function play(note){
-	synth.triggerAttackRelease(note, "4n");
+	// synth.triggerAttackRelease(note, 1);
+
+	playTone(note,'sawtooth', 2)
 }
 
 function resetTimer(){
