@@ -1,6 +1,13 @@
 <head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <script src="audiosynth.js"></script>
+<script src="Tone.min.js"></script>
+<script src="simpleTones.js"></script>
+
+
+
+
+
 <style>
 
 *{
@@ -9,6 +16,7 @@
         -khtml-user-select: none;
         -webkit-user-select: none;
         -o-user-select: none;
+        -webkit-tap-highlight-color: none;
 }
 
 body,html{
@@ -67,7 +75,6 @@ body{
 <body ontouchstart="">
 
 
-<script src="Tone.min.js"></script>
 
 <script>
 
@@ -138,10 +145,12 @@ var piano = Synth.createInstrument('piano');
 function play(note, octave) {
 	// synth.triggerAttackRelease(note, 1);
 	// plays C4 for 2s using the 'piano' sound profile
-	// playTone(note,'sawtooth', 2)
+
+
+	playTone(note+octave,'sawtooth', 2)
 
 	console.log(note,octave)
-	piano.play(note, octave, 2); 
+	// piano.play(note, octave, 2); 
 }
 
 function resetTimer(){
@@ -250,6 +259,10 @@ function resize(){
 			}
 
 		}
+	}
+
+	if(bestCandidtate === undefined){
+		bestCandidtate = 30
 	}
 
 
