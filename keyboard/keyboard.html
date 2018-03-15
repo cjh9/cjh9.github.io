@@ -1,41 +1,43 @@
-
 <head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<script src="simpleTones.js"></script>
-<!-- <script src="StartAudioContext.js"></script> -->
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<script src="audiosynth.js"></script>
 <style>
+
+*{
+	user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+}
 
 body,html{
 	overflow: hidden;
 	height: 100%;
 	width: 100%;
 }
-
+	
 body{
-	background:blue !important;
 	box-sizing: border-box;
 	margin: 0;
 	padding: 15px;
 }
 
 button{
-    width: 20%;
-    height: 16.666%;
+    width: 0%;
+    height: 0%;
     background: #4e4e4e;
     color: white;
     outline: none;
     -webkit-appearance: none;
     border: 1px solid lightgray;
-    transition: all 0.2s;
+    transition: background, color 0.2s;
     font-size: 150%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    cursor: pointer;
 }
 
-button:active{
+button:active:not(.disabled){
 	background: white;
 	color:gray;
 }
@@ -54,6 +56,10 @@ body{
 	background: #7d7d7d;
 }
 
+.disabled{
+	background: #dedede;
+}
+
 </style>
 
 </head>
@@ -65,53 +71,226 @@ body{
 
 <script>
 
+let persist = ()=>localStorage.range = JSON.stringify(range)
+let range = localStorage.range && JSON.parse(localStorage.range) || {low: 5, high: 33}
+
 
 let count = 0
 setInterval(()=>{
 	count++
-	if(count > 7.5*60){
-		document.body.style.background = "#a1f5a1"
-	}
+	colors()
 	renderTime()
 },1e3)
 
 
-var synth = new Tone.Synth().toMaster();
 
-const mynotes = 
-['F2','F#2','G2','G#2','A2','A#2','B2',
-'C3','C#3','D3','D#3','E3','F3','F#3','G3','G#3', 'A3', 'A#3', 'B3', 
-'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'G4', 'G#4'
-] //27 notes
+let times = [5*60, 7.5*60, 10*60, 12.5*60, 15*60]
+
+ // times = [1,2,3,4,5]
+
+
+function colors(){
+	if(count === times[0]){
+		document.body.style.background = "#e27b93"
+	}
+	else if(count === times[1]){
+		document.body.style.background = "#81e27b"
+	}
+	else if(count === times[2]){
+		document.body.style.background = "#7b83e2"
+	}
+	else if(count === times[3]){
+		document.body.style.background = "#efc087"
+	}
+	else if(count === times[4]){
+		document.body.style.background = "#000000"
+	}
+}
+
+// var synth = new Tone.Synth({modulationType : 'sawtooth'}).toMaster();
+
+
+
+//F2 till g#4
+// const mynotes = 
+// ['F2','F#2','G2','G#2', 'A2','A#2','B2',
+// 'C3','C#3','D3','D#3','E3','F3','F#3','G3','G#3', 'A3', 'A#3', 'B3', 
+// 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'G4', 'G#4'
+// ] //27 notes
+
+
+let letters = ['C','C#','D','D#','E','F','F#','G','G#', 'A','A#','B']
+
+let octaves = [2,3,4,5,6,7]
+let allNotes = octaves.map((o) => letters.map((l)=>[l,o]) )
+allNotes = [].concat.apply([], allNotes);
+
+
 
 // var context = new AudioContext();
 // StartAudioContext(context).then((e)=>{
 // 	console.log(e)
 // })
 
-function play(note){
-	// synth.triggerAttackRelease(note, 1);
+var piano = Synth.createInstrument('piano');
 
-	playTone(note,'sawtooth', 2)
+
+function play(note, octave) {
+	// synth.triggerAttackRelease(note, 1);
+	// plays C4 for 2s using the 'piano' sound profile
+	// playTone(note,'sawtooth', 2)
+
+	console.log(note,octave)
+	piano.play(note, octave, 2); 
 }
 
 function resetTimer(){
+	document.body.style.background = "#bfbfbf"
+
 	count = 0
 	renderTime()
 }
 
+
+let getTime = ()=> parseInt(count/60) + ':' + (count % 60)
+
 function renderTime(){
 	let timerElm = document.getElementById('timer')
-	let time = parseInt(count/60) + ':' + (count % 60)
-	timerElm.innerText = time
+	timerElm.innerText = getTime()
 }
 
-function render() {
-	let keyboard = mynotes.map((note)=>`<button onclick="play('${note}')" class="key">${note}</button>`).join('')
 
-	keyboard = '<button onclick="resetTimer()" id="timer">0</div>' + keyboard
+
+
+let canDecLow = () => range.low > 0
+let canIncHigh = () => range.high < allNotes.length
+let canDecNumButtons = () => range.high > range.low
+
+function shiftup(){
+	if(canIncHigh()){
+		range.high++
+		range.low++
+	}
+	render()
+}
+
+function shiftdown(){
+	if(canDecLow()){
+		range.high--
+		range.low--
+	}
+	render()
+}
+
+
+function inc(){
+	if(canDecLow()){
+		range.low--
+	}
+	else if(canIncHigh()){
+		range.high++
+	}
+	
+	render()
+}
+
+
+function dec(){
+	if(canDecNumButtons()){
+		range.low++
+	}
+	render()
+}
+
+function myNotes(){
+	return allNotes.slice(range.low, range.high)
+}
+
+
+
+function candidateInrange(width, candidate){
+
+	for(var i = 0 ; i < 2 ; i++){
+		if(width % candidate-i === 0 || width % candidate+i === 0){
+			return true
+		}
+	}
+
+}
+
+
+
+
+function resize(){
+	let height = document.body.clientHeight-30
+	let width = document.body.clientWidth-30
+
+	let bestCandidtate;
+	let bestRatio = 0;
+
+	let candidate = 5
+
+	for (candidate = 5 ; candidate < 400; candidate++){
+		if(candidateInrange(width,candidate)){
+			let area = candidate*candidate
+
+			let nbuttons = myNotes().length + 5
+
+			let total = (height)*(width)
+
+
+			let btnarea = area*nbuttons 
+
+
+			let ratio = btnarea/total
+
+			if(ratio<1 && ratio > bestRatio){
+				bestCandidtate = candidate
+				bestRatio = ratio
+			}
+
+		}
+	}
+
+
+	let btns = document.querySelectorAll('button')
+
+	for(b = 0 ; b < btns.length ; b++){
+		btns[b].style.width = bestCandidtate + 'px'
+		btns[b].style.height = bestCandidtate + 'px'
+		btns[b].style.fontSize = bestCandidtate/3 + 'px'
+	}
+
+	console.log(bestCandidtate)
+
+
+}
+
+window.onload = ()=> resize()
+
+
+window.addEventListener('resize', function () {resize()})
+
+
+
+function render() {
+
+	persist()
+
+
+	let keyboard = myNotes().map((note)=>`<button onclick="play('${note[0]}','${note[1]}')" class="key">${note[0]}${note[1]}</button>`).join('')
+
+	keyboard = `<button onclick="resetTimer()" id="timer">${getTime()}</div>` +
+	   `<button onclick="inc()" id="inc" class"${canIncHigh() && canDecLow() || 'disabled'}">+</button>` +
+	   `<button onclick="dec()" id="dec">-</button>` +
+
+	   `<button onclick="shiftdown()" id="addlow" class="${canDecLow() || 'disabled'}"><</button>` +
+	   `<button onclick="shiftup()" id="addhigh" class="${canIncHigh() || 'disabled'}">></button>` +
+	   keyboard 
 
 	document.body.innerHTML = keyboard
+
+	resize()
 }
 
 render()
