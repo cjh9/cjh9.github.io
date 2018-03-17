@@ -18,6 +18,7 @@
         -o-user-select: none;
 -webkit-tap-highlight-color: rgba(0,0,0,0);
 -webkit-tap-highlight-color: transparent;
+touch-action: manipulation;
 }
 
 body,html{
@@ -73,7 +74,7 @@ body{
 
 </head>
 
-<body ontouchstart="">
+<body>
 
 
 
@@ -83,9 +84,11 @@ let persist = ()=>localStorage.range = JSON.stringify(range)
 let range = localStorage.range && JSON.parse(localStorage.range) || {low: 5, high: 33}
 
 
-let count = 0
+let start = new Date()
+let diff = 0
+
+
 setInterval(()=>{
-	count++
 	colors()
 	renderTime()
 },1e3)
@@ -98,19 +101,19 @@ let times = [5*60, 7.5*60, 10*60, 12.5*60, 15*60]
 
 
 function colors(){
-	if(count === times[0]){
+	if(diff === times[0]){
 		document.body.style.background = "#e27b93"
 	}
-	else if(count === times[1]){
+	else if(diff === times[1]){
 		document.body.style.background = "#81e27b"
 	}
-	else if(count === times[2]){
+	else if(diff === times[2]){
 		document.body.style.background = "#7b83e2"
 	}
-	else if(count === times[3]){
+	else if(diff === times[3]){
 		document.body.style.background = "#efc087"
 	}
-	else if(count === times[4]){
+	else if(diff === times[4]){
 		document.body.style.background = "#000000"
 	}
 }
@@ -156,7 +159,21 @@ var synth = new Tone.PolySynth(6, Tone.Synth, {
 			}
 		}).toMaster();
 
+
+let isTouchDevice = false
+
 function play(note, octave) {
+
+	 if(this.event.type === 'touchstart'){
+	 	isTouchDevice = true
+	 }
+
+	 if(this.event.type === 'mousedown' && isTouchDevice ) return
+
+	// if(this.event.buttons !==1 && this.event.type === 'mouseover') return 
+
+	console.log( this.event.type)
+
 	// plays C4 for 2s using the 'piano' sound profile
 
 	synth.triggerAttackRelease(note+octave, 0.5);
@@ -170,15 +187,19 @@ function play(note, octave) {
 function resetTimer(){
 	document.body.style.background = "#7d7d7d"
 
-	count = 0
+	start = new Date()
 	renderTime()
+
 }
 
 
-let getTime = ()=> parseInt(count/60) + ':' + (count % 60)
+let getTime = ()=> parseInt(diff/60) + ':' + (diff % 60)
 
 function renderTime(){
 	let timerElm = document.getElementById('timer')
+
+	diff = Math.floor((new Date()-start)/1000)
+
 	timerElm.innerText = getTime()
 }
 
@@ -262,17 +283,22 @@ function resize(){
 
 
 			let nCols = width/candidate
+
 			let nRows = height/candidate
 			// let nButtonPlaces = area*nbuttons
 
-			let btnarea = parseFloat(area*nRows*nCols)
-			btnarea = nbuttons*area
+			let nButtonRows = Math.ceil(nbuttons/nCols)
+
+
+
+			let btnarea = parseFloat(area*nButtonRows*nCols)
+			// btnarea = nbuttons*area
 
 
 
 			let ratio = btnarea/total
 
-			console.log(ratio)
+			// console.log(ratio)
 
 
 			if(ratio<1 && ratio > bestRatio){
@@ -296,7 +322,7 @@ function resize(){
 		btns[b].style.fontSize = bestCandidtate/3 + 'px'
 	}
 
-	console.log(bestCandidtate)
+	console.log('resizing' + bestCandidtate)
 
 
 }
@@ -313,7 +339,12 @@ function render() {
 	persist()
 
 
-	let keyboard = myNotes().map((note)=>`<button onmousedown="play('${note[0]}','${note[1]}')" class="key">${note[0]}${note[1]}</button>`).join('')
+
+	let keyboard = myNotes().map((note)=>{
+		let fc = `"play('${note[0]}','${note[1]}')"`
+
+		return `<button onmousedown=${fc} ontouchstart=${fc} class="key">${note[0]}${note[1]}</button>`
+	}).join('')
 
 	keyboard = `<button onclick="resetTimer()" id="timer">${getTime()}</div>` +
 	   `<button onclick="inc()" id="inc" class"${canIncHigh() && canDecLow() || 'disabled'}">+</button>` +
