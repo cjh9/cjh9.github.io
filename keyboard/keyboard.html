@@ -140,22 +140,35 @@ allNotes = [].concat.apply([], allNotes);
 // 	console.log(e)
 // })
 
-var piano = Synth.createInstrument('piano');
+// var piano = Synth.createInstrument('piano');
 
+
+
+type = 'sawtooth'
+
+
+// var synth = new Tone.FMSynth().toMaster()
+
+
+var synth = new Tone.PolySynth(6, Tone.Synth, {
+			"oscillator" : {
+				"partials" : [0, 2, 3, 4],
+			}
+		}).toMaster();
 
 function play(note, octave) {
-	// synth.triggerAttackRelease(note, 1);
 	// plays C4 for 2s using the 'piano' sound profile
 
+	synth.triggerAttackRelease(note+octave, 0.5);
 
-	playTone(note+octave,'sawtooth', 2)
+	// playTone(note+octave,type, 2)
 
 	console.log(note,octave)
 	// piano.play(note, octave, 2); 
 }
 
 function resetTimer(){
-	document.body.style.background = "#bfbfbf"
+	document.body.style.background = "#7d7d7d"
 
 	count = 0
 	renderTime()
@@ -194,20 +207,19 @@ function shiftdown(){
 
 
 function inc(){
-	if(canDecLow()){
-		range.low--
-	}
-	else if(canIncHigh()){
+	if(canIncHigh()){
 		range.high++
 	}
-	
+	else if(canDecLow()){
+		range.low--
+	}
 	render()
 }
 
 
 function dec(){
 	if(canDecNumButtons()){
-		range.low++
+		range.high--
 	}
 	render()
 }
@@ -249,10 +261,19 @@ function resize(){
 			let total = (height)*(width)
 
 
-			let btnarea = area*nbuttons 
+			let nCols = width/candidate
+			let nRows = height/candidate
+			// let nButtonPlaces = area*nbuttons
+
+			let btnarea = parseFloat(area*nRows*nCols)
+			btnarea = nbuttons*area
+
 
 
 			let ratio = btnarea/total
+
+			console.log(ratio)
+
 
 			if(ratio<1 && ratio > bestRatio){
 				bestCandidtate = candidate
@@ -292,14 +313,14 @@ function render() {
 	persist()
 
 
-	let keyboard = myNotes().map((note)=>`<button onclick="play('${note[0]}','${note[1]}')" class="key">${note[0]}${note[1]}</button>`).join('')
+	let keyboard = myNotes().map((note)=>`<button onmousedown="play('${note[0]}','${note[1]}')" class="key">${note[0]}${note[1]}</button>`).join('')
 
 	keyboard = `<button onclick="resetTimer()" id="timer">${getTime()}</div>` +
 	   `<button onclick="inc()" id="inc" class"${canIncHigh() && canDecLow() || 'disabled'}">+</button>` +
 	   `<button onclick="dec()" id="dec">-</button>` +
 
-	   `<button onclick="shiftdown()" id="addlow" class="${canDecLow() || 'disabled'}"><</button>` +
-	   `<button onclick="shiftup()" id="addhigh" class="${canIncHigh() || 'disabled'}">></button>` +
+	   `<button onclick="shiftdown()" id="" class="${canDecLow() || 'disabled'}"><</button>` +
+	   `<button onclick="shiftup()" id="" class="${canIncHigh() || 'disabled'}">></button>` +
 	   keyboard 
 
 	document.body.innerHTML = keyboard
