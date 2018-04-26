@@ -1,0 +1,433 @@
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<script src="audiosynth.js"></script>
+<script src="Tone.min.js"></script>
+<script src="simpleTones.js"></script>
+
+
+<style>
+
+*{
+	user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+-webkit-tap-highlight-color: transparent;
+touch-action: manipulation;
+}
+
+body,html{
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+	
+body{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 15px;
+}
+
+button{
+    width: 0%;
+    height: 0%;
+    background: #4e4e4e;
+    color: white;
+    outline: none;
+    -webkit-appearance: none;
+    border: 1px solid lightgray;
+    /*transition: background, color 0.2s;*/
+    font-size: 150%;
+    text-align: center;
+    cursor: pointer;
+}
+
+button:active:not(.disabled){
+	background: white;
+	color:gray;
+}
+
+#timer{
+	background: white;
+	color:gray;
+}
+
+#timer:active{
+	background: #4e4e4e;
+    color: white;
+}
+
+body{
+	background: #7d7d7d;
+}
+
+.disabled{
+	background: #dedede;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<script>
+
+let persist = ()=>localStorage.range = JSON.stringify(range)
+let range = localStorage.range && JSON.parse(localStorage.range) || {low: 5, high: 33}
+
+
+let start = new Date()
+let diff = 0
+
+
+setInterval(()=>{
+	colors()
+	renderTime()
+},1e3)
+
+
+
+let times = [5*60, 7.5*60, 10*60, 12.5*60, 15*60]
+
+ // times = [1,2,3,4,5]
+
+
+function colors(){
+	if(diff === times[0]){
+		document.body.style.background = "#e27b93"
+	}
+	else if(diff === times[1]){
+		document.body.style.background = "#81e27b"
+	}
+	else if(diff === times[2]){
+		document.body.style.background = "#7b83e2"
+	}
+	else if(diff === times[3]){
+		document.body.style.background = "#efc087"
+	}
+	else if(diff === times[4]){
+		document.body.style.background = "#000000"
+	}
+}
+
+// var synth = new Tone.Synth({modulationType : 'sawtooth'}).toMaster();
+
+
+
+//F2 till g#4
+// const mynotes = 
+// ['F2','F#2','G2','G#2', 'A2','A#2','B2',
+// 'C3','C#3','D3','D#3','E3','F3','F#3','G3','G#3', 'A3', 'A#3', 'B3', 
+// 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'G4', 'G#4'
+// ] //27 notes
+
+
+let letters = ['C','C#','D','D#','E','F','F#','G','G#', 'A','A#','B']
+
+let octaves = [2,3,4,5,6,7]
+let allNotes = octaves.map((o) => letters.map((l)=>[l,o]) )
+allNotes = [].concat.apply([], allNotes);
+
+
+
+// var context = new AudioContext();
+// StartAudioContext(context).then((e)=>{
+// 	console.log(e)
+// })
+
+// var piano = Synth.createInstrument('piano');
+
+
+
+type = 'sawtooth'
+
+
+// var synth = new Tone.FMSynth().toMaster()
+
+
+var synth = new Tone.PolySynth(6, Tone.Synth, {
+			"oscillator" : {
+				"partials" : [0, 2, 3, 4],
+			}
+		}).toMaster();
+
+
+let isTouchDevice = false
+
+function play(note, octave) {
+
+	 if(this.event && this.event.type === 'touchstart'){
+	 	isTouchDevice = true
+	 }
+
+	 if(this.event && this.event.type === 'mousedown' && isTouchDevice ) return
+
+	// if(this.event.buttons !==1 && this.event.type === 'mouseover') return 
+
+	console.log(this.event && this.event.type)
+
+	// plays C4 for 2s using the 'piano' sound profile
+
+	synth.triggerAttackRelease(note+octave, 0.5);
+
+	// playTone(note+octave,type, 2)
+
+	console.log(note,octave)
+	// piano.play(note, octave, 2); 
+}
+
+function resetTimer(){
+	document.body.style.background = "#7d7d7d"
+
+	start = new Date()
+	renderTime()
+
+}
+
+
+let getTime = ()=> parseInt(diff/60) + ':' + (diff % 60)
+
+function renderTime(){
+	let timerElm = document.getElementById('timer')
+
+	diff = Math.floor((new Date()-start)/1000)
+
+	timerElm.innerText = getTime()
+}
+
+
+
+
+let canDecLow = () => range.low > 0
+let canIncHigh = () => range.high < allNotes.length
+let canDecNumButtons = () => range.high > range.low
+
+function shiftup(){
+	if(canIncHigh()){
+		range.high++
+		range.low++
+	}
+	render()
+}
+
+function shiftdown(){
+	if(canDecLow()){
+		range.high--
+		range.low--
+	}
+	render()
+}
+
+
+function inc(){
+	if(canIncHigh()){
+		range.high++
+	}
+	else if(canDecLow()){
+		range.low--
+	}
+	render()
+}
+
+
+function dec(){
+	if(canDecNumButtons()){
+		range.high--
+	}
+	render()
+}
+
+function myNotes(){
+	return allNotes.slice(range.low, range.high)
+}
+
+
+
+function candidateInrange(width, candidate){
+
+	for(var i = 0 ; i < 6 ; i++){
+		if(width % candidate-i === 0 || width % candidate+i === 0){
+			return true
+		}
+	}
+
+}
+
+
+
+
+function resize(){
+	let height = document.body.clientHeight-30
+	let width = document.body.clientWidth-30
+
+	let bestCandidtate;
+	let bestRatio = 0;
+
+	let candidate = 5
+
+	for (candidate = 5 ; candidate < 400; candidate++){
+		if(candidateInrange(width,candidate)){
+			let area = candidate*candidate
+
+			let nbuttons = myNotes().length + 5
+
+			let total = (height)*(width)
+
+
+			let nCols = width/candidate
+
+			let nRows = height/candidate
+			// let nButtonPlaces = area*nbuttons
+
+			let nButtonRows = Math.ceil(nbuttons/nCols)
+
+
+
+			let btnarea = parseFloat(area*nButtonRows*nCols)
+			// btnarea = nbuttons*area
+
+
+
+			let ratio = btnarea/total
+
+			// console.log(ratio)
+
+
+			if(ratio<1 && ratio > bestRatio){
+				bestCandidtate = candidate
+				bestRatio = ratio
+			}
+
+		}
+	}
+
+	if(bestCandidtate === undefined){
+		bestCandidtate = 30
+	}
+
+
+	let btns = document.querySelectorAll('button')
+
+	for(b = 0 ; b < btns.length ; b++){
+		btns[b].style.width = bestCandidtate + 'px'
+		btns[b].style.height = bestCandidtate + 'px'
+		btns[b].style.fontSize = bestCandidtate/3 + 'px'
+	}
+
+	console.log('resizing' + bestCandidtate)
+
+
+}
+
+window.onload = ()=> resize()
+
+
+window.addEventListener('resize', function () {resize()})
+
+
+function render() {
+
+	persist()
+
+	let keyboard = myNotes().map((note)=>{
+		let fc = `"play('${note[0]}','${note[1]}')"`
+
+		return `<button onmousedown=${fc} ontouchstart=${fc} class="key">${note[0]}${note[1]}</button>`
+	}).join('')
+
+	keyboard = `<button onclick="resetTimer()" id="timer">${getTime()}</div>` +
+	   `<button onclick="inc()" id="inc" class"${canIncHigh() && canDecLow() || 'disabled'}">+</button>` +
+	   `<button onclick="dec()" id="dec">-</button>` +
+
+	   `<button onclick="shiftdown()" id="" class="${canDecLow() || 'disabled'}"><</button>` +
+	   `<button onclick="shiftup()" id="" class="${canIncHigh() || 'disabled'}">></button>` +
+	   keyboard 
+
+	document.body.innerHTML = keyboard
+
+	resize()
+}
+
+render()
+
+mynotes = myNotes()
+
+function playIdx(i){ //play
+	play(mynotes[i][0],mynotes[i][1])
+}
+
+function r(a,b) {
+if(a && !b) return a
+if(!a) {a = 0; b=mynotes.length-1}
+return Math.round(a+Math.random()*(b-a))
+
+
+} //
+
+function p(a,b){ //Play random
+	let i = r(a,b) 
+
+
+	playIdx(i)
+	let arr =[...document.querySelector('body').children].forEach((elm,idx)=>{
+		idx -= 5
+		if(idx===i) elm.style.background = 'green'
+		else elm.style.background = ''
+	})
+}
+
+time = 0
+function s(fn, timeafter) {
+	time += timeafter*1000
+	setTimeout(fn, time)
+}
+
+
+s(()=>p(7),0)
+s(()=>p(8),5)
+s(()=>p(6),5)
+s(()=>p(9),5)
+s(()=>p(5),5)
+s(()=>p(10),5)
+s(()=>p(4),5)
+s(()=>p(11),5)
+s(()=>p(3),5)
+s(()=>p(12),5)
+s(()=>p(2),5)
+s(()=>p(1),5)
+s(()=>p(13),5)
+s(()=>p(0),5)
+s(()=>p(14),5)
+s(()=>p(15),5)
+s(()=>p(16),5)
+s(()=>p(17),5)
+s(()=>p(18),5)
+s(()=>p(19),5)
+s(()=>p(20),5)
+s(()=>p(21),5)
+s(()=>p(22),5)
+s(()=>p(23),5)
+s(()=>p(24),5)
+s(()=>p(25),5)
+s(()=>p(26),5)
+s(()=>p(27),5)
+s(()=>p(28),5)
+s(()=>p(29),5)
+//2.5 minuter
+
+
+for (i in Array(30)) { //2 min intervall
+	s(()=>p(),3)
+	s(()=>p(),0.3)
+
+}
+
+
+</script>
+
+</body>
