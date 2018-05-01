@@ -98,12 +98,11 @@ let times = [5*60, 7.5*60, 10*60, 12.5*60, 15*60]
 
 
 function colors(){
-	return
-	if(diff === times[0]){
-		document.body.style.background = "#e27b93"
-	}
-	else if(diff === times[1]){
+	if(diff === times[1] || count > 20){
 		document.body.style.background = "#81e27b"
+	}
+	else if(diff === times[0]){
+		document.body.style.background = "#e27b93"
 	}
 	else if(diff === times[2]){
 		document.body.style.background = "#7b83e2"
@@ -160,7 +159,11 @@ var synth = new Tone.PolySynth(6, Tone.Synth, {
 
 let isTouchDevice = false
 
-function play(note, octave) {
+var startidx = null
+
+function play(note, octave, idx ) {
+
+	startidx = parseInt(idx)
 
 	 if(this.event && this.event.type === 'touchstart'){
 	 	isTouchDevice = true
@@ -182,8 +185,13 @@ function play(note, octave) {
 	// piano.play(note, octave, 2); 
 }
 
+
+
+
 function resetTimer(){
+	count = 0
 	document.body.style.background = "#7d7d7d"
+
 
 	start = new Date()
 	renderTime()
@@ -311,7 +319,6 @@ function resize(){
 		bestCandidtate = 30
 	}
 
-
 	let btns = document.querySelectorAll('button')
 
 	for(b = 0 ; b < btns.length ; b++){
@@ -321,8 +328,6 @@ function resize(){
 	}
 
 	console.log('resizing' + bestCandidtate)
-
-
 }
 
 window.onload = ()=> resize()
@@ -335,8 +340,8 @@ function render() {
 
 	persist()
 
-	let keyboard = myNotes().map((note)=>{
-		let fc = `"play('${note[0]}','${note[1]}')"`
+	let keyboard = myNotes().map((note, idx)=>{
+		let fc = `"play('${note[0]}','${note[1]}','${idx}' )"`
 
 		return `<button onmousedown=${fc} ontouchstart=${fc} class="key">${note[0]}${note[1]}</button>`
 	}).join('')
@@ -350,7 +355,7 @@ function render() {
 
 	   `<button onclick="shiftdown()" id="" class="${canDecLow() || 'disabled'}"><</button>` +
 	   `<button onclick="shiftup()" id="" class="${canIncHigh() || 'disabled'}">></button>` +
-	   keyboard +  '<button onclick="play3()">S</button>'
+	   keyboard +  '<button onclick="play3()">W</button>'
 
 	document.body.innerHTML = keyboard
 
@@ -374,6 +379,7 @@ return Math.round(a+Math.random()*(b-a))
 } //
 
 function p(a,b, noreset){ //Play random
+
 	let i = r(a,b) 
 
 
@@ -399,36 +405,36 @@ function s(fn, timeafter) {
 
 let w = 5
 
-s(()=>p(7),0)
-s(()=>p(8),w)
-s(()=>p(6),w)
-s(()=>p(9),w)
-s(()=>p(5),w)
-s(()=>p(10),w)
-s(()=>p(4),w)
-s(()=>p(11),w)
-s(()=>p(3),w)
-s(()=>p(12),w)
-s(()=>p(2),w)
-s(()=>p(13),w)
-s(()=>p(1),w)
-s(()=>p(14),w)
-s(()=>p(0),w)
-s(()=>p(15),w)
-s(()=>p(16),w)
-s(()=>p(17),w)
-s(()=>p(18),w)
-s(()=>p(19),w)
-s(()=>p(20),w)
-s(()=>p(21),w)
-s(()=>p(22),w)
-s(()=>p(23),w)
-s(()=>p(24),w)
-s(()=>p(25),w)
-s(()=>p(26),w)
-s(()=>p(27),w)
-s(()=>p(28),w)
-s(()=>p(29),w)
+// s(()=>p(7),0)
+// s(()=>p(8),w)
+// s(()=>p(6),w)
+// s(()=>p(9),w)
+// s(()=>p(5),w)
+// s(()=>p(10),w)
+// s(()=>p(4),w)
+// s(()=>p(11),w)
+// s(()=>p(3),w)
+// s(()=>p(12),w)
+// s(()=>p(2),w)
+// s(()=>p(13),w)
+// s(()=>p(1),w)
+// s(()=>p(14),w)
+// s(()=>p(0),w)
+// s(()=>p(15),w)
+// s(()=>p(16),w)
+// s(()=>p(17),w)
+// s(()=>p(18),w)
+// s(()=>p(19),w)
+// s(()=>p(20),w)
+// s(()=>p(21),w)
+// s(()=>p(22),w)
+// s(()=>p(23),w)
+// s(()=>p(24),w)
+// s(()=>p(25),w)
+// s(()=>p(26),w)
+// s(()=>p(27),w)
+// s(()=>p(28),w)
+// s(()=>p(29),w)
 //2.5 minuter
 
 
@@ -439,7 +445,29 @@ for (var i of Array(30)) { //2 min intervall
 }
 
 let count = 0
+
 function play3() {
+	if(count === 0){
+		time = 0
+		startidx = startidx || Math.floor(mynotes.length/2)
+		let i
+		s(()=>p(startidx),0); i++
+		for(i = 1 ; i < mynotes.length; i++){
+			let candidate1 = startidx - i;
+			let candidate2 = startidx + i
+			if(candidate1 >= 0) {
+				s(()=>p(candidate1),w) 
+			}
+			if(candidate2 < mynotes.length){
+				s(()=>p(candidate2),w)
+			}
+
+			if(candidate1 < 0 && candidate2 >= mynotes.length){
+				count++
+				return
+			}
+		}
+	}
 	// if(e.target != document.body) return 
 	count++
 	resetc()
