@@ -53,7 +53,7 @@ function startTick(){
     interval = setInterval(()=>{
         var lapsed = Math.floor((new Date() - mode.startedDate)/1000)
         sec.innerHTML = lapsed
-        if (lapsed  === 120){
+        if (lapsed  >= 120){
             clearInterval(interval)
             mode.startedDate = false
             updateUI()
